@@ -1,0 +1,3 @@
+# WebDigger
+
+A simple spider
