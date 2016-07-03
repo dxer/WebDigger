@@ -17,12 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.digger.spider.entity.Request;
+import org.digger.spider.entity.Response;
 import org.digger.spider.scheduler.QueueScheduler;
 import org.digger.spider.scheduler.Scheduler;
-
-import com.google.common.base.Strings;
 
 /**
  * 
@@ -31,85 +33,112 @@ import com.google.common.base.Strings;
  * @version 1.0
  * @since 2016年4月11日
  */
-public class Digger {
+public class Digger implements Runnable {
 
-    private List<String> urls = new ArrayList<String>();
+	private List<String> urls = new ArrayList<String>();
 
-    private Scheduler<Request> scheduler = new QueueScheduler();
+	private Scheduler<Request> scheduler = new QueueScheduler();
 
-    private int threadNum = 4;
+	private int threadNum = 4;
 
-    private boolean isRunning = true;
+	private boolean isRunning = true;
 
-    /**
-     * 
-     */
-    public Digger register(Spider spider) {
-        if (spider != null) {
-            List<String> startUrls = spider.getStartUrls();
+	private static ThreadPoolExecutor threadPoolExecutor;
 
-            if (startUrls != null && !startUrls.isEmpty()) {
-                for (String url: startUrls) {
-                    Request request = new Request();
-                    request.setUrl(url);
-                    request.setSpider(spider);
+	public Digger() {
+		init();
+	}
 
-                    scheduler.put(request);
-                }
-            }
-        }
-        return this;
-    }
+	private void init() {
+		threadPoolExecutor = new ThreadPoolExecutor(threadNum, threadNum, 3, TimeUnit.SECONDS,
+				new LinkedBlockingQueue<Runnable>(3));
+	}
 
-    /**
-     * 启动线程
-     */
-    public void start() {
-        try {
-            this.isRunning = true;
+	/**
+	 * 
+	 */
+	public Digger register(Spider spider) {
+		if (spider != null) {
+			List<String> startUrls = spider.getStartUrls();
 
-            ExecutorService executors = Executors.newFixedThreadPool(threadNum);
+			if (startUrls != null && !startUrls.isEmpty()) {
+				for (String url : startUrls) {
+					Request request = new Request();
+					request.setUrl(url);
+					request.setSpider(spider);
 
-            for (int i = 0; i < threadNum; i++) {
-                executors.execute(new Worker());
-            }
-            executors.shutdown();
-            System.out.println("--------------------------");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+					scheduler.put(request);
+				}
+			}
+		}
+		return this;
+	}
 
-    public void stop() {
-        this.isRunning = false;
-    }
+	/**
+	 * 启动线程
+	 */
+	public void start() {
+		try {
+			this.isRunning = true;
 
-    /**
-     * 爬虫线程
-     * 
-     * @class Worker
-     * @author linghf
-     * @version 1.0
-     * @since 2016年4月11日
-     */
-    class Worker implements Runnable {
-        public void run() {
-            while (isRunning) {
-                try {
-                    Request request = scheduler.take();
-                    String requestURL = request.getUrl();
-                    System.out.println(requestURL);
+			ExecutorService executors = Executors.newFixedThreadPool(threadNum);
 
-                    Spider spider = request.getSpider();
+			for (int i = 0; i < threadNum; i++) {
+				executors.execute(new Worker());
+			}
+			executors.shutdown();
+			System.out.println("--------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-                    if (!Strings.isNullOrEmpty(requestURL) && spider != null) {
-                        spider.download(requestURL);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+	public void stop() {
+		this.isRunning = false;
+	}
+
+	/**
+	 * 爬虫线程
+	 * 
+	 * @class Worker
+	 * @author linghf
+	 * @version 1.0
+	 * @since 2016年4月11日
+	 */
+	class Worker implements Runnable {
+		public void run() {
+			while (isRunning) {
+				try {
+					final Request request = scheduler.take();
+
+					threadPoolExecutor.execute(new Runnable() {
+
+						public void run() {
+							process(request);
+						}
+					});
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void run() {
+
+	}
+
+	public void process(Request request) {
+		Spider spider = request.getSpider();
+
+		if (!request.vertify()) {
+
+		}
+
+		Response response = spider.download(request);
+		spider.parser(response);
+
+	}
 
 }

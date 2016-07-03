@@ -1,16 +1,3 @@
-/**
- * Copyright (c) 2016 21CN.COM . All rights reserved.
- * 
- * Description: web-digger
- * 
- * <pre>
- * Modified log:
- * ------------------------------------------------------
- * Ver.		Date		Author			Description
- * ------------------------------------------------------
- * 1.0		2016年4月11日	linghf		created.
- * </pre>
- */
 package org.digger.spider;
 
 /**

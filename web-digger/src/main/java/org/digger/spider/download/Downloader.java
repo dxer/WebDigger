@@ -1,5 +1,6 @@
 package org.digger.spider.download;
 
+import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
 
 /**
@@ -11,5 +12,5 @@ import org.digger.spider.entity.Response;
  */
 public interface Downloader {
 
-    public Response download(String requestUrl);
+	public Response download(Request request);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.digger.spider.download.Downloader;
 import org.digger.spider.download.HttpClientDownloader;
+import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
 
 /**
@@ -17,69 +18,76 @@ import org.digger.spider.entity.Response;
  */
 public abstract class Spider extends BaseSpider {
 
-    /**
-     * 爬虫的名字，用于区别Spider
-     */
-    private String name;
+	/**
+	 * 爬虫的名字，用于区别Spider
+	 */
+	private String name;
 
-    /**
-     * spider启动的时候需要爬取的url列表
-     */
-    private List<String> startUrls = new ArrayList<String>();
+	/**
+	 * spider启动的时候需要爬取的url列表
+	 */
+	private List<String> startUrls = new ArrayList<String>();
 
-    private Downloader downloader;
+	/**
+	 * 包含了spider允许爬去的域名的列表
+	 */
+	private String allowedDomains;
 
-    public String getName() {
-        return name;
-    }
+	/**
+	 * 使用的下载器
+	 */
+	private Downloader downloader;
 
-    public Spider setName(String name) {
-        this.name = name;
-        return this;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public List<String> getStartUrls() {
-        return startUrls;
-    }
+	public Spider setName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    public Spider setStartUrls(List<String> startUrls) {
-        if (startUrls != null && startUrls.size() > 0) {
-            this.startUrls.addAll(startUrls);
-        }
+	public List<String> getStartUrls() {
+		return startUrls;
+	}
 
-        return this;
-    }
+	public Spider setStartUrls(List<String> startUrls) {
+		if (startUrls != null && startUrls.size() > 0) {
+			this.startUrls.addAll(startUrls);
+		}
 
-    public void addStartUrls(String... urls) {
-        if (urls != null && urls.length > 0) {
-            if (startUrls == null) {
-                startUrls = new ArrayList<String>();
-            }
+		return this;
+	}
 
-            for (String s: urls) {
-                startUrls.add(s);
-            }
-        }
-    }
+	public void addStartUrls(String... urls) {
+		if (urls != null && urls.length > 0) {
+			if (startUrls == null) {
+				startUrls = new ArrayList<String>();
+			}
 
-    public Spider setDownloader(Downloader downloader) {
-        this.downloader = downloader;
-        return this;
-    }
+			for (String s : urls) {
+				startUrls.add(s);
+			}
+		}
+	}
 
-    public Downloader getDownloader() {
-        if (downloader == null) {
-            downloader = new HttpClientDownloader();
-        }
+	public Spider setDownloader(Downloader downloader) {
+		this.downloader = downloader;
+		return this;
+	}
 
-        return downloader;
-    }
+	public Downloader getDownloader() {
+		if (downloader == null) {
+			downloader = new HttpClientDownloader(); // 使用默认的下载器进行下载
+		}
+		return downloader;
+	}
 
-    public void parser(Response response) {
+	public void parser(Response response) {
 
-    }
+	}
 
-    public Response download(String requestUrl) {
-        return getDownloader().download(requestUrl);
-    }
+	public Response download(Request request) {
+		return getDownloader().download(request);
+	}
 }
