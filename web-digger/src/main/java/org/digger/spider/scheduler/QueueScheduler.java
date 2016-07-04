@@ -24,8 +24,8 @@ public class QueueScheduler implements Scheduler<Request> {
 
     public Request take() {
         try {
-            return queue.take();
-        } catch (InterruptedException e) {
+            return queue.poll();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -35,9 +35,9 @@ public class QueueScheduler implements Scheduler<Request> {
         try {
             String url = request.getUrl();
             if (visited != null && !visited.contains(url) && unVisited != null && !unVisited.contains(url)) {
-                queue.put(request);
+                queue.add(request);
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
