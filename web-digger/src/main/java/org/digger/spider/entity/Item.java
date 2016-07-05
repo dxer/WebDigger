@@ -3,6 +3,8 @@ package org.digger.spider.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * 
  * @class Item
@@ -49,7 +51,8 @@ public class Item {
         if (request != null) {
             url = request.getUrl();
         }
-        sb.append("Item{ ").append("url = ").append(url).append(", fields = ").append(fields).append(" }");
+        sb.append("Item={").append("url=").append(url).append(", fields=").append(JSON.toJSONString(fields))
+                        .append("}");
         return sb.toString();
     }
 }

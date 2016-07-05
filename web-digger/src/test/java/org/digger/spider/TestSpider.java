@@ -10,7 +10,7 @@ package org.digger.spider;
 public class TestSpider extends Spider {
 
     public static void main(String[] args) {
-        Spider spider = new TestSpider();
+        TestSpider spider = new TestSpider();
         spider.setName("test");
 
         spider.addStartUrls("http://news.qq.com/world_index.shtml", "http://mil.qq.com/mil_index.htm");

@@ -2,6 +2,12 @@ package org.digger.spider.entity;
 
 import java.util.Map;
 
+import org.digger.spider.selector.Selector;
+
+import sun.swing.StringUIClientPropertyKey;
+
+import com.google.common.base.Strings;
+
 /**
  * 
  * 
@@ -18,13 +24,15 @@ public class Response {
 
     private Map<String, String> headers;
 
-    private String body;
+    private String html;
 
     private Request request;
 
     private Map<String, String> meta;
 
     private Item item = new Item();
+
+    private Selector selector;
 
     public String getUrl() {
         return url;
@@ -50,12 +58,15 @@ public class Response {
         this.headers = headers;
     }
 
-    public String getBody() {
-        return body;
+    public String getHtml() {
+        return html;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setHtml(String html) {
+        this.html = html;
+        if (!Strings.isNullOrEmpty(this.html)) {
+            selector = new Selector(this.html);
+        }
     }
 
     public Request getRequest() {
@@ -75,14 +86,6 @@ public class Response {
         this.meta = meta;
     }
 
-    public String xpath(String xpath) {
-        return null;
-    }
-
-    public String css(String cssQuery) {
-        return null;
-    }
-
     public Item getItem() {
         return item;
     }
@@ -91,4 +94,27 @@ public class Response {
         this.item.put(key, value);
     }
 
+    public String css(String cssQuery) {
+        if (!Strings.isNullOrEmpty(cssQuery) && selector != null) {
+            return selector.css(cssQuery);
+        }
+        return null;
+    }
+
+    public String xpath(String path) {
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Resopnse { ");
+        sb.append(" url = ").append(request.getUrl());
+
+        sb.append(", status = ").append(status);
+        sb.append(", item = ").append(item);
+
+        sb.append("}");
+        return sb.toString();
+    }
 }

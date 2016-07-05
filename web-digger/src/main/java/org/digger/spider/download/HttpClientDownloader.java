@@ -169,7 +169,7 @@ public class HttpClientDownloader implements Downloader {
 
             HttpEntity entity = httpResponse.getEntity();
             String content = EntityUtils.toString(entity, "utf-8");
-            response.setBody(content);// 返回抓取网页的内容
+            response.setHtml(content);// 返回抓取网页的内容
 
             Header[] headers = httpResponse.getAllHeaders();
             if (headers != null && headers.length > 0) {

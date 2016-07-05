@@ -35,7 +35,7 @@ public abstract class Spider extends BaseSpider {
     /**
      * 包含了spider允许爬去的域名的列表
      */
-    private String allowedDomains;
+    private List<String> allowedDomains = new ArrayList<String>();
 
     /**
      * 使用的下载器
@@ -67,6 +67,15 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
+    public Spider setAllowedDomains(String... domains) {
+        if (domains != null && domains.length > 0) {
+            for (String domain: domains) {
+                allowedDomains.add(domain);
+            }
+        }
+        return this;
+    }
+
     public void addStartUrls(String... urls) {
         if (urls != null && urls.length > 0) {
             if (startUrls == null) {
@@ -84,15 +93,21 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
-    public Downloader getDownloader() {
+    private Downloader getDownloader() {
         if (downloader == null) {
             downloader = new HttpClientDownloader(); // 使用默认的下载器进行下载
         }
         return downloader;
     }
 
+    public Response download(Request request) {
+        return getDownloader().download(request);
+    }
+
     public void parser(Response response) {
-        response.put("body", response.getBody());
+        if (response != null) {
+            response.put("title", response.css("title"));
+        }
     }
 
     public Spider setParser(Parser parser) {
@@ -100,7 +115,7 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
-    public Parser getParser() {
+    private Parser getParser() {
         if (parser == null) {
             parser = null;
         }
@@ -116,14 +131,11 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
-    public Storage getStorage() {
+    private Storage getStorage() {
         if (storage == null) {
             storage = new ConsoleStorage();
         }
         return storage;
     }
 
-    public Response download(Request request) {
-        return getDownloader().download(request);
-    }
 }
