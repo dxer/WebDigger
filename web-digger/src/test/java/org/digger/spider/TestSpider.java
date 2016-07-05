@@ -15,10 +15,7 @@ public class TestSpider extends Spider {
 
         spider.addStartUrls("http://news.qq.com/world_index.shtml", "http://mil.qq.com/mil_index.htm");
 
-        Digger digger = new Digger();
-        digger.register(spider);
-
-        digger.start();
+        Digger.getInstance().register(spider).start();
     }
 
 }

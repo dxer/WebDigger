@@ -47,8 +47,24 @@ public class Digger {
 
     private static Condition condition = diggerLocker.newCondition();
 
-    public Digger(){
+    /**
+     * 使用静态内部类的方式实现单例模式
+     * 
+     * @class DiggerBuilder
+     * @author linghf
+     * @version 1.0
+     * @since 2016年7月4日
+     */
+    private static class DiggerBuilder {
+        private static final Digger INSTANCE = new Digger();
+    }
 
+    private Digger(){
+
+    }
+
+    public static final Digger getInstance() {
+        return DiggerBuilder.INSTANCE;
     }
 
     /**
@@ -60,11 +76,6 @@ public class Digger {
     public Digger threadNum(int threadNum) {
         this.threadNum = threadNum;
         return this;
-    }
-
-    public Digger build() {
-
-        return new Digger();
     }
 
     public void addRequests(Spider spider, List<String> urls) {
@@ -108,7 +119,7 @@ public class Digger {
 
             if (threadPoolExecutor == null) {
                 threadPoolExecutor = new ThreadPoolExecutor(threadNum, threadNum, 3, TimeUnit.SECONDS,
-                                new LinkedBlockingQueue<Runnable>(3));
+                                new LinkedBlockingQueue<Runnable>());
             }
 
             if (!this.isRunning) {
@@ -175,12 +186,12 @@ public class Digger {
         Response response = spider.download(request);
         if (response != null) {
             spider.parser(response);
+            spider.processItem(response.getItem());
         }
 
         try {
             Thread.sleep(1000 * 2);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
