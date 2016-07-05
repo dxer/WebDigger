@@ -16,6 +16,12 @@ import org.digger.spider.entity.Item;
  * @since 2016年4月15日
  */
 public class FileStorage implements Storage {
+    
+    private String dir;
+    
+    public FileStorage(String dir){
+        this.dir = dir;
+    }
 
     private void write(String fileName, String content) {
         DataOutputStream dos = null;
@@ -40,9 +46,10 @@ public class FileStorage implements Storage {
     public void processItem(Item item) {
         String fileName = DigestUtils.md5Hex(item.getRequest().getUrl().getBytes());
 
+        String path = dir + fileName;
         String content = null;
 
-        write(fileName, content);
+        write(path, content);
 
     }
 
