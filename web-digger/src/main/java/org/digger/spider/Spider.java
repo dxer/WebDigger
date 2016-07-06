@@ -112,6 +112,7 @@ public abstract class Spider extends BaseSpider {
             }
         }
     }
+    
 
     public Spider setDownloader(Downloader downloader) {
         this.downloader = downloader;

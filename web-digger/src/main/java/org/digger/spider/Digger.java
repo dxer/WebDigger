@@ -85,11 +85,7 @@ public class Digger {
         try {
             if (urls != null && !urls.isEmpty()) {
                 for (String url: urls) {
-                    Request request = new Request();
-                    request.setUrl(url);
-                    request.setSpider(spider);
-
-                    scheduler.put(request);
+                    addRequest(spider, url);
                 }
 
                 condition.signalAll();
@@ -178,8 +174,12 @@ public class Digger {
         }
     }
 
-    private void addRequest() {
+    private void addRequest(Spider spider, String url) {
+        Request request = new Request();
+        request.setUrl(url);
+        request.setSpider(spider);
 
+        scheduler.put(request);
     }
 
     public void process(Request request) {
@@ -196,7 +196,11 @@ public class Digger {
 
             if (spider.isFollowed()) {
                 Set<String> urls = LinkExtractor.extract(response, spider.getFilter());
-                System.out.println(urls);
+                if (urls != null && urls.size() > 0) {
+                    for (String url: urls) {
+                        addRequest(spider, url);
+                    }
+                }
             }
 
         }
