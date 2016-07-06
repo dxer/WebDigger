@@ -18,107 +18,117 @@ import com.google.common.base.Strings;
  */
 public class Response {
 
-    private String url;
+	private String url;
 
-    private int status;
+	private int status;
 
-    private Map<String, String> headers;
+	private Map<String, String> headers;
 
-    private String html;
+	private String html;
 
-    private Request request;
+	private Request request;
 
-    private Map<String, String> meta;
+	private Map<String, String> meta;
 
-    private Item item = new Item();
+	private Item item = new Item();
 
-    private Selector selector;
+	private Selector selector;
 
-    public String getUrl() {
-        return url;
-    }
+	private OutputModel model;
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public Selector getSelector(){
-        return this.selector;
-    }
-    
-    public int getStatus() {
-        return status;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+	public Selector getSelector() {
+		return this.selector;
+	}
 
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
+	public int getStatus() {
+		return status;
+	}
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
-    public String getHtml() {
-        return html;
-    }
+	public Map<String, String> getHeaders() {
+		return headers;
+	}
 
-    public void setHtml(String html) {
-        this.html = html;
-        if (!Strings.isNullOrEmpty(this.html)) {
-            selector = new Selector(this.html);
-        }
-    }
+	public void setHeaders(Map<String, String> headers) {
+		this.headers = headers;
+	}
 
-    public Request getRequest() {
-        return request;
-    }
+	public String getHtml() {
+		return html;
+	}
 
-    public void setRequest(Request request) {
-        this.request = request;
-        this.item.setRequest(request);
-    }
+	public void setHtml(String html) {
+		this.html = html;
+		if (!Strings.isNullOrEmpty(this.html)) {
+			selector = new Selector(this.html);
+		}
+	}
 
-    public Map<String, String> getMeta() {
-        return meta;
-    }
+	public Request getRequest() {
+		return request;
+	}
 
-    public void setMeta(Map<String, String> meta) {
-        this.meta = meta;
-    }
+	public void setRequest(Request request) {
+		this.request = request;
+		this.item.setRequest(request);
+	}
 
-    public Item getItem() {
-        return item;
-    }
+	public Map<String, String> getMeta() {
+		return meta;
+	}
 
-    public void put(String key, Object value) {
-        this.item.put(key, value);
-    }
+	public void setMeta(Map<String, String> meta) {
+		this.meta = meta;
+	}
 
-    public String css(String cssQuery) {
-        if (!Strings.isNullOrEmpty(cssQuery) && selector != null) {
-            return selector.css(cssQuery);
-        }
-        return null;
-    }
+	public Item getItem() {
+		return item;
+	}
 
-    public String xpath(String path) {
-        return null;
-    }
+	public void put(String key, Object value) {
+		this.item.put(key, value);
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Resopnse { ");
-        sb.append(" url = ").append(request.getUrl());
+	public String css(String cssQuery) {
+		if (!Strings.isNullOrEmpty(cssQuery) && selector != null) {
+			return selector.css(cssQuery);
+		}
+		return null;
+	}
 
-        sb.append(", status = ").append(status);
-        sb.append(", item = ").append(item);
+	public String xpath(String path) {
+		return null;
+	}
 
-        sb.append("}");
-        return sb.toString();
-    }
+	public OutputModel getOutputModel() {
+		return model;
+	}
+
+	public void setOutputModel(OutputModel model) {
+		this.model = model;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Resopnse { ");
+		sb.append(" url = ").append(request.getUrl());
+
+		sb.append(", status = ").append(status);
+		sb.append(", item = ").append(item);
+
+		sb.append("}");
+		return sb.toString();
+	}
 }

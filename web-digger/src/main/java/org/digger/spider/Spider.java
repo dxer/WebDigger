@@ -6,6 +6,7 @@ import java.util.List;
 import org.digger.spider.download.Downloader;
 import org.digger.spider.download.HttpClientDownloader;
 import org.digger.spider.entity.Item;
+import org.digger.spider.entity.OutputModel;
 import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
 import org.digger.spider.parser.Parser;
@@ -28,6 +29,9 @@ public abstract class Spider extends BaseSpider {
 	 */
 	protected String name;
 
+	/**
+	 * 是否爬取更多的url
+	 */
 	protected boolean followed = false;
 
 	/**
@@ -35,7 +39,15 @@ public abstract class Spider extends BaseSpider {
 	 */
 	protected List<String> startUrls = new ArrayList<String>();
 
-	private LinkFilter filter = new LinkFilter();
+	/**
+	 * url过滤器
+	 */
+	protected LinkFilter filter = new LinkFilter();
+
+	/**
+	 * 输入model
+	 */
+	protected OutputModel model;
 
 	/**
 	 * 使用的下载器
@@ -85,8 +97,9 @@ public abstract class Spider extends BaseSpider {
 		return filter;
 	}
 
-	public void setFilter(LinkFilter filter) {
+	public Spider setFilter(LinkFilter filter) {
 		this.filter = filter;
+		return this;
 	}
 
 	public List<String> getStartUrls() {
@@ -101,7 +114,7 @@ public abstract class Spider extends BaseSpider {
 		return this;
 	}
 
-	public void addStartUrls(String... urls) {
+	public Spider addStartUrls(String... urls) {
 		if (urls != null && urls.length > 0) {
 			if (startUrls == null) {
 				startUrls = new ArrayList<String>();
@@ -111,6 +124,20 @@ public abstract class Spider extends BaseSpider {
 				startUrls.add(s);
 			}
 		}
+		return this;
+	}
+
+	public Spider setOutPutModel(OutputModel model) {
+		this.model = model;
+		return this;
+	}
+
+	public OutputModel getOutputModel() {
+		return model;
+	}
+
+	public void setOutputModel(OutputModel model) {
+		this.model = model;
 	}
 
 	public Spider setDownloader(Downloader downloader) {
@@ -131,7 +158,6 @@ public abstract class Spider extends BaseSpider {
 
 	public void parser(Response response) {
 		if (response != null) {
-
 			response.put("title", response.css("title"));
 		}
 	}
