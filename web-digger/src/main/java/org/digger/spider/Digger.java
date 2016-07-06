@@ -198,6 +198,7 @@ public class Digger {
                 Set<String> urls = LinkExtractor.extract(response, spider.getFilter());
                 if (urls != null && urls.size() > 0) {
                     for (String url: urls) {
+                        System.out.println(url);
                         addRequest(spider, url);
                     }
                 }

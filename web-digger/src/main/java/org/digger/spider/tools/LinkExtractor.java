@@ -90,7 +90,7 @@ public class LinkExtractor {
 
     public static Set<String> extract(Response response, LinkFilter filter) {
         Set<String> urls = null;
-        if (response != null && filter != null) {
+        if (response != null && !Strings.isNullOrEmpty(response.getUrl()) && filter != null) {
             urls = new HashSet<String>();
             Selector selector = response.getSelector();
             Document doc = null;
@@ -102,6 +102,8 @@ public class LinkExtractor {
                 return urls;
             }
 
+            doc.setBaseUri(response.getUrl());
+
             Elements links = doc.select("a[href]");
             Elements media = doc.select("[src]");
 
@@ -111,7 +113,6 @@ public class LinkExtractor {
 
             for (Element src: media) {
                 String url = src.attr("abs:src");
-                System.out.println(url);
 
                 if (!Strings.isNullOrEmpty(url)) {
                     if (isSuit(url, allows, allowDomains)) {
@@ -122,7 +123,6 @@ public class LinkExtractor {
 
             for (Element link: links) {
                 String url = link.attr("abs:href");
-                System.out.println(url);
 
                 if (!Strings.isNullOrEmpty(url)) {
                     if (isSuit(url, allows, allowDomains)) {
@@ -130,6 +130,7 @@ public class LinkExtractor {
                     }
                 }
             }
+
         }
 
         return urls;
