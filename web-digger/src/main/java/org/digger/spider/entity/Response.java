@@ -42,6 +42,10 @@ public class Response {
         this.url = url;
     }
 
+    public Selector getSelector(){
+        return this.selector;
+    }
+    
     public int getStatus() {
         return status;
     }

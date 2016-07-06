@@ -14,6 +14,7 @@
 package org.digger.spider;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -25,6 +26,7 @@ import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
 import org.digger.spider.scheduler.QueueScheduler;
 import org.digger.spider.scheduler.Scheduler;
+import org.digger.spider.tools.LinkExtractor;
 
 /**
  * 
@@ -148,7 +150,7 @@ public class Digger {
         public void run() {
             while (isRunning) {
                 try {
-                    final Request request = scheduler.take();
+                    final Request request = scheduler.get();
                     if (request == null) {
                         diggerLocker.lock();
 
@@ -176,6 +178,10 @@ public class Digger {
         }
     }
 
+    private void addRequest() {
+
+    }
+
     public void process(Request request) {
         Spider spider = request.getSpider();
 
@@ -187,6 +193,12 @@ public class Digger {
         if (response != null) {
             spider.parser(response);
             spider.processItem(response.getItem());
+
+            if (spider.isFollowed()) {
+                Set<String> urls = LinkExtractor.extract(response, spider.getFilter());
+                System.out.println(urls);
+            }
+
         }
 
         try {

@@ -29,7 +29,7 @@ public class QueueWithBFScheduler implements Scheduler<Request> {
         finishedBloomFilter = new DBloomFilter(size);
     }
 
-    public Request take() {
+    public Request get() {
         try {
             return queue.take();
         } catch (InterruptedException e) {

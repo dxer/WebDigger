@@ -23,7 +23,7 @@ package org.digger.spider.scheduler;
  */
 public interface Scheduler<T> {
 
-    public T take();
+    public T get();
 
     public void put(T request);
 

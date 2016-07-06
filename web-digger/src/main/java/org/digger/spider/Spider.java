@@ -11,6 +11,7 @@ import org.digger.spider.entity.Response;
 import org.digger.spider.parser.Parser;
 import org.digger.spider.storage.ConsoleStorage;
 import org.digger.spider.storage.Storage;
+import org.digger.spider.tools.LinkFilter;
 
 /**
  * 
@@ -25,17 +26,16 @@ public abstract class Spider extends BaseSpider {
     /**
      * 爬虫的名字，用于区别Spider
      */
-    private String name;
+    protected String name;
+
+    protected boolean followed = false;
 
     /**
      * spider启动的时候需要爬取的url列表
      */
-    private List<String> startUrls = new ArrayList<String>();
+    protected List<String> startUrls = new ArrayList<String>();
 
-    /**
-     * 包含了spider允许爬去的域名的列表
-     */
-    private List<String> allowedDomains = new ArrayList<String>();
+    private LinkFilter filter = new LinkFilter();
 
     /**
      * 使用的下载器
@@ -55,6 +55,40 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
+    public boolean isFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(boolean followed) {
+        this.followed = followed;
+    }
+
+    public Spider addAllows(String... allows) {
+        if (allows != null && allows.length > 0) {
+            for (String allow: allows) {
+                filter.getAllows().add(allow);
+            }
+        }
+        return this;
+    }
+
+    public Spider addAllowDomains(String... allowDomains) {
+        if (allowDomains != null && allowDomains.length > 0) {
+            for (String allowDomain: allowDomains) {
+                filter.getAllowDomains().add(allowDomain);
+            }
+        }
+        return this;
+    }
+
+    public LinkFilter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(LinkFilter filter) {
+        this.filter = filter;
+    }
+
     public List<String> getStartUrls() {
         return startUrls;
     }
@@ -64,15 +98,6 @@ public abstract class Spider extends BaseSpider {
             this.startUrls.addAll(startUrls);
         }
 
-        return this;
-    }
-
-    public Spider setAllowedDomains(String... domains) {
-        if (domains != null && domains.length > 0) {
-            for (String domain: domains) {
-                allowedDomains.add(domain);
-            }
-        }
         return this;
     }
 
@@ -106,6 +131,7 @@ public abstract class Spider extends BaseSpider {
 
     public void parser(Response response) {
         if (response != null) {
+
             response.put("title", response.css("title"));
         }
     }

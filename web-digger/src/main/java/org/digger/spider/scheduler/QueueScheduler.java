@@ -16,13 +16,17 @@ import org.digger.spider.entity.Request;
  */
 public class QueueScheduler implements Scheduler<Request> {
 
+    /**
+     * 爬虫队列
+     */
     private final LinkedBlockingQueue<Request> queue = new LinkedBlockingQueue<Request>();
 
+    /**
+     * 记录已经访问过的url链接
+     */
     private Set<String> visited = new HashSet<String>();
 
-    private Set<String> unVisited = new HashSet<String>();
-
-    public Request take() {
+    public Request get() {
         try {
             return queue.poll();
         } catch (Exception e) {
@@ -34,7 +38,7 @@ public class QueueScheduler implements Scheduler<Request> {
     public void put(Request request) {
         try {
             String url = request.getUrl();
-            if (visited != null && !visited.contains(url) && unVisited != null && !unVisited.contains(url)) {
+            if (visited != null && !visited.contains(url) && queue != null && !queue.contains(url)) {
                 queue.add(request);
             }
         } catch (Exception e) {
