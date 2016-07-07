@@ -6,6 +6,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.digger.spider.entity.Request;
 
+import com.sun.org.apache.regexp.internal.recompile;
+
 /**
  * 
  * 
@@ -28,7 +30,11 @@ public class QueueScheduler implements Scheduler<Request> {
 
     public Request get() {
         try {
-            return queue.poll();
+            Request request = queue.poll();
+            if (request != null) {
+                visited.add(request.getUrl());
+            }
+            return request;
         } catch (Exception e) {
             e.printStackTrace();
         }

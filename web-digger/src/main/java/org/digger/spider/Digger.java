@@ -70,19 +70,15 @@ public class Digger {
     }
 
     public void addRequests(Spider spider, List<String> urls) {
-        diggerLocker.lock();
+
         try {
             if (urls != null && !urls.isEmpty()) {
                 for (String url: urls) {
                     addRequest(spider, url);
                 }
-
-                condition.signalAll();
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            diggerLocker.unlock();
         }
     }
 
@@ -168,7 +164,15 @@ public class Digger {
         request.setUrl(url);
         request.setSpider(spider);
 
-        scheduler.put(request);
+        try {
+            diggerLocker.lock();
+            scheduler.put(request);
+            condition.signalAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            diggerLocker.unlock();
+        }
     }
 
     public void process(Request request) {

@@ -98,7 +98,7 @@ public class HttpClientDownloader implements Downloader {
         cm.setDefaultMaxPerRoute(20);
 
         // 将目标主机的最大连接数增加到50
-        // HttpHost localhost = new HttpHost("http://blog.csdn.net/gaolu", 80);
+        // HttpHost localhost = new HttpHost("", 80);
         // cm.setMaxPerRoute(new HttpRoute(localhost), 50);
 
         // 请求重试处理
