@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.digger.spider.entity.Response;
-import org.digger.spider.selector.Selector;
+import org.digger.spider.selector.JXDoc;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -88,14 +88,21 @@ public class LinkExtractor {
         return isSuit;
     }
 
+    /**
+     * 根据过滤规则提取链接
+     * 
+     * @param response
+     * @param filter
+     * @return
+     */
     public static Set<String> extract(Response response, LinkFilter filter) {
         Set<String> urls = null;
         if (response != null && !Strings.isNullOrEmpty(response.getUrl()) && filter != null) {
             urls = new HashSet<String>();
-            Selector selector = response.getSelector();
+            JXDoc jxDoc = response.getJXDoc();
             Document doc = null;
-            if (selector != null) {
-                doc = selector.getDoc();
+            if (jxDoc != null) {
+                doc = jxDoc.doc();
             }
 
             if (doc == null) {

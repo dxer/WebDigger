@@ -22,7 +22,7 @@ public class ItemLoader {
 
     public void addXpath(String name, String xpath) {
         if (!Strings.isNullOrEmpty(name) && !Strings.isNullOrEmpty(xpath)) {
-            String value = response.xpath(xpath);
+            String value = response.getJXDoc().getXpath().xpath(xpath);
 
             response.put(name, value);
 
@@ -31,7 +31,7 @@ public class ItemLoader {
 
     public void addCss(String name, String cssQuesy) {
         if (response != null && !Strings.isNullOrEmpty(name) && !Strings.isNullOrEmpty(cssQuesy)) {
-            String value = response.css(cssQuesy);
+            String value = response.getJXDoc().getSelector().css(cssQuesy);
 
             response.put(name, value);
 

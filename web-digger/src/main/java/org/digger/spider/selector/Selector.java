@@ -1,9 +1,8 @@
 package org.digger.spider.selector;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,21 +18,16 @@ import com.google.common.base.Strings;
  */
 public class Selector {
 
-    Document doc = null;
+    private Document doc = null;
 
-    public Selector(String html){
-        if (!Strings.isNullOrEmpty(html)) {
-            doc = Jsoup.parse(html);
+    public Selector(Document doc){
+        if (doc != null) {
+            this.doc = doc;
         }
     }
 
     public Document getDoc() {
         return this.doc;
-    }
-
-    public String xpath(String xpath) {
-
-        return null;
     }
 
     public String getTitle() {
@@ -50,27 +44,20 @@ public class Selector {
 
         return ret;
     }
-
-    public Set<String> extracLinks(Set<String> allowedDomains, Set<String> regs) {
-        Set<String> urls = new HashSet<String>();
-        Elements links = doc.select("a[href]");
-        Elements media = doc.select("[src]");
-
-        for (Element src: media) {
-            String url = src.attr("abs:src");
-            if (!Strings.isNullOrEmpty(url)) {
-                urls.add(url);
-            }
+    
+    public Elements selElements(String cssQuery) {
+        if (doc == null || Strings.isNullOrEmpty(cssQuery)) {
+            return null;
         }
 
-        System.out.printf("\nLinks: (%d)", links.size());
-        for (Element link: links) {
-            String url = link.attr("abs:href");
-            if (!Strings.isNullOrEmpty(url)) {
-                urls.add(url);
-            }
-        }
-        return urls;
+        Selector selector = new Selector(doc);
+        return doc.select(cssQuery);
+    }
+
+    public List<String> selList(String cssQuery) {
+        List<String> results = new ArrayList<String>();
+        
+        return results;
     }
 
 }
