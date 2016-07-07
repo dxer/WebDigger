@@ -1,19 +1,5 @@
-/**
- * Copyright (c) 2016 21CN.COM . All rights reserved.
- * 
- * Description: web-digger
- * 
- * <pre>
- * Modified log:
- * ------------------------------------------------------
- * Ver.		Date		Author			Description
- * ------------------------------------------------------
- * 1.0		2016年4月11日	linghf		created.
- * </pre>
- */
 package org.digger.spider;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -113,7 +99,7 @@ public class Digger {
     }
 
     /**
-     * 启动线程
+     * 启动爬虫
      */
     public void start() {
         try {
@@ -192,18 +178,19 @@ public class Digger {
             return;
         }
 
+        // 请求对应的url，获取网页相关数据Response
         Response response = spider.download(request);
         if (response != null) {
 
+            // digger会对定义的OutputModel进行解析处理
             Class<? extends OutputModel> claz = spider.getOutputModelClass();
             if (claz != null) {
                 FieldResolver.resolve(response, claz);
-            } else {
-                spider.parser(response);
             }
-            spider.processItem(response.getItem());
+            // 对用户自定义的设置，进行网页分析
+            spider.parser(response);
 
-            if (spider.isFollowed()) {
+            if (spider.isFollowed()) { // 提取当前页面其他符合规则的url，进行继续爬取
                 Set<String> urls = LinkExtractor.extract(response, spider.getFilter());
                 if (urls != null && urls.size() > 0) {
                     for (String url: urls) {
@@ -212,6 +199,8 @@ public class Digger {
                 }
             }
 
+            // storage对item进行处理
+            spider.processItem(response.getItem());
         }
 
         try {

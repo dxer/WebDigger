@@ -14,6 +14,8 @@ import org.digger.spider.storage.ConsoleStorage;
 import org.digger.spider.storage.Storage;
 import org.digger.spider.tools.LinkFilter;
 
+import com.google.common.base.Strings;
+
 /**
  * 
  * 
@@ -56,9 +58,12 @@ public abstract class Spider extends BaseSpider {
 
     private Storage storage;
 
-    private Processor parser;
+    private Processor processor;
 
     public String getName() {
+        if (Strings.isNullOrEmpty(name)) {
+            name = getClass().getCanonicalName();
+        }
         return name;
     }
 
@@ -158,16 +163,16 @@ public abstract class Spider extends BaseSpider {
         }
     }
 
-    public Spider setParser(Processor parser) {
-        this.parser = parser;
+    public Spider setProcessor(Processor processor) {
+        this.processor = processor;
         return this;
     }
 
-    private Processor getParser() {
-        if (parser == null) {
-            parser = null;
+    private Processor getProcessor() {
+        if (processor == null) {
+            processor = null;
         }
-        return parser;
+        return processor;
     }
 
     public void processItem(Item item) {
