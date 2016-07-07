@@ -3,8 +3,6 @@ package org.digger.spider.entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.org.mozilla.javascript.internal.json.JsonParser;
-
 import com.alibaba.fastjson.JSON;
 
 /**
@@ -63,13 +61,18 @@ public class Item {
         if (request != null) {
             url = request.getUrl();
         }
-        sb.append("Item={").append("url=").append(url).append(", fields=").append(JSON.toJSONString(fields));
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("url", url);
+        map.put("fields", fields);
+
+        sb.append("Item=");
+
         if (model != null) {
-            sb.append(", model=");
-            sb.append(JSON.toJSONString(model));
+            map.put("model", model);
         }
 
-        sb.append("}");
+        sb.append(JSON.toJSONString(map));
+
         return sb.toString();
     }
 }

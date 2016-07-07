@@ -18,7 +18,6 @@ import com.google.common.base.Strings;
 
 /**
  * 
- * 
  * @class Spider
  * @author linghf
  * @version 1.0
@@ -47,7 +46,7 @@ public abstract class Spider extends BaseSpider {
     protected LinkFilter filter = new LinkFilter();
 
     /**
-     * 输入model
+     * 输出model
      */
     protected Class<? extends OutputModel> outPutModelClass;
 
@@ -76,25 +75,18 @@ public abstract class Spider extends BaseSpider {
         return followed;
     }
 
-    public void setFollowed(boolean followed) {
+    public Spider setFollowed(boolean followed) {
         this.followed = followed;
+        return this;
     }
 
     public Spider addAllows(String... allows) {
-        if (allows != null && allows.length > 0) {
-            for (String allow: allows) {
-                filter.getAllows().add(allow);
-            }
-        }
+        filter.addAllows(allows);
         return this;
     }
 
     public Spider addAllowDomains(String... allowDomains) {
-        if (allowDomains != null && allowDomains.length > 0) {
-            for (String allowDomain: allowDomains) {
-                filter.getAllowDomains().add(allowDomain);
-            }
-        }
+        filter.addAllowDomains(allowDomains);
         return this;
     }
 
@@ -159,6 +151,7 @@ public abstract class Spider extends BaseSpider {
 
     public void parser(Response response) {
         if (response != null) {
+            response.put("url", response.getRequest().getUrl());
             response.put("title", response.getJXDoc().getSelector().getTitle());
         }
     }
@@ -168,7 +161,7 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
-    private Processor getProcessor() {
+    public Processor getProcessor() {
         if (processor == null) {
             processor = null;
         }

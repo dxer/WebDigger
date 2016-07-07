@@ -9,10 +9,12 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Field {
+public @interface FieldRule {
 
     FieldType type() default FieldType.CSS;
 
     String expr();
+
+    String format() default "";
 
 }

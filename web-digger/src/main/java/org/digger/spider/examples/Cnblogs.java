@@ -1,6 +1,6 @@
 package org.digger.spider.examples;
 
-import org.digger.spider.annotation.Field;
+import org.digger.spider.annotation.FieldRule;
 import org.digger.spider.annotation.FieldType;
 import org.digger.spider.entity.OutputModel;
 
@@ -13,10 +13,10 @@ import org.digger.spider.entity.OutputModel;
  */
 public class Cnblogs extends OutputModel {
 
-    @Field(type = FieldType.CSS, expr = "#cb_post_title_url")
+    @FieldRule(type = FieldType.CSS, expr = "#cb_post_title_url")
     private String title;
 
-    @Field(type = FieldType.CSS, expr = "#cnblogs_post_body")
+    @FieldRule(type = FieldType.CSS, expr = "#cnblogs_post_body")
     private String content;
 
     public String getTitle() {

@@ -50,9 +50,7 @@ public class Digger {
         private static final Digger INSTANCE = new Digger();
     }
 
-    private Digger(){
-
-    }
+    private Digger(){}
 
     public static final Digger getInstance() {
         return DiggerBuilder.INSTANCE;
@@ -70,7 +68,6 @@ public class Digger {
     }
 
     public void addRequests(Spider spider, List<String> urls) {
-
         try {
             if (urls != null && !urls.isEmpty()) {
                 for (String url: urls) {
@@ -80,6 +77,17 @@ public class Digger {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 设置调度器
+     * 
+     * @param scheduler
+     * @return
+     */
+    public Digger setScheduler(Scheduler<Request> scheduler) {
+        this.scheduler = scheduler;
+        return this;
     }
 
     /**
@@ -99,7 +107,6 @@ public class Digger {
      */
     public void start() {
         try {
-
             if (threadPoolExecutor == null) {
                 threadPoolExecutor = new ThreadPoolExecutor(threadNum, threadNum, 3, TimeUnit.SECONDS,
                                 new LinkedBlockingQueue<Runnable>());
@@ -143,11 +150,11 @@ public class Digger {
                             diggerLocker.unlock();
                         }
 
-                    } else {
+                    } else { // 将任务加入到线程池中进行出入
                         threadPoolExecutor.execute(new Runnable(){
 
                             public void run() {
-                                process(request);
+                                execute(request);
                             }
                         });
                     }
@@ -175,7 +182,25 @@ public class Digger {
         }
     }
 
-    public void process(Request request) {
+    /**
+     * 爬虫线程sleep
+     * 
+     * @param time
+     */
+    private void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 执行，核心逻辑
+     * 
+     * @param request
+     */
+    private void execute(Request request) {
         Spider spider = request.getSpider();
 
         if (!request.vertify()) {
@@ -207,11 +232,7 @@ public class Digger {
             spider.processItem(response.getItem());
         }
 
-        try {
-            Thread.sleep(1000 * 2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleep(3 * 1000);
 
     }
 
