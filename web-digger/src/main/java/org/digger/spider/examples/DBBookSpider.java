@@ -53,7 +53,7 @@ public class DBBookSpider extends Spider {
     }
 
     /**
-     * 自定义的Storage，这里仅仅是将文件打印输出
+     * 自定义的Storage，这里仅仅是将信息打印输出
      */
     @Override
     public void persist(Item item) {
