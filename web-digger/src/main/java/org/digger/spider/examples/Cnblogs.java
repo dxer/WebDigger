@@ -2,7 +2,7 @@ package org.digger.spider.examples;
 
 import org.digger.spider.annotation.FieldRule;
 import org.digger.spider.annotation.FieldType;
-import org.digger.spider.entity.OutputModel;
+import org.digger.spider.entity.CrawlModel;
 
 /**
  * 
@@ -11,7 +11,7 @@ import org.digger.spider.entity.OutputModel;
  * @version 1.0
  * @since 2016年7月7日
  */
-public class Cnblogs extends OutputModel {
+public class Cnblogs extends CrawlModel {
 
     @FieldRule(type = FieldType.CSS, expr = "#cb_post_title_url")
     private String title;

@@ -96,11 +96,11 @@ public class Response {
         this.item.put(key, value);
     }
 
-    public OutputModel getOutputModel() {
+    public CrawlModel getOutputModel() {
         return item.getOutputModel();
     }
 
-    public void setOutputModel(OutputModel model) {
+    public void setOutputModel(CrawlModel model) {
         item.setOutputModel(model);
     }
 

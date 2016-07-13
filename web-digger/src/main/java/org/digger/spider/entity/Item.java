@@ -16,7 +16,7 @@ public class Item {
 
     private Map<String, Object> fields = new HashMap<String, Object>();
 
-    private OutputModel model;
+    private CrawlModel model;
 
     private Request request;
 
@@ -46,11 +46,11 @@ public class Item {
         return this;
     }
 
-    public void setOutputModel(OutputModel model) {
+    public void setOutputModel(CrawlModel model) {
         this.model = model;
     }
 
-    public OutputModel getOutputModel() {
+    public CrawlModel getOutputModel() {
         return this.model;
     }
 

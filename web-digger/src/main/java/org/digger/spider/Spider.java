@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.digger.spider.download.Downloader;
 import org.digger.spider.download.HttpClientDownloader;
+import org.digger.spider.entity.CrawlModel;
 import org.digger.spider.entity.Item;
-import org.digger.spider.entity.OutputModel;
 import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
 import org.digger.spider.processor.Processor;
@@ -48,7 +48,7 @@ public abstract class Spider extends BaseSpider {
     /**
      * 输出model
      */
-    protected Class<? extends OutputModel> outPutModelClass;
+    protected Class<? extends CrawlModel> crawlClass;
 
     /**
      * 使用的下载器
@@ -124,13 +124,13 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
-    public Spider setOutPutModel(Class<? extends OutputModel> claz) {
-        this.outPutModelClass = claz;
+    public Spider setCrawlModel(Class<? extends CrawlModel> claz) {
+        this.crawlClass = claz;
         return this;
     }
 
-    public Class<? extends OutputModel> getOutputModelClass() {
-        return this.outPutModelClass;
+    public Class<? extends CrawlModel> getCrawlClass() {
+        return this.crawlClass;
     }
 
     public Spider setDownloader(Downloader downloader) {

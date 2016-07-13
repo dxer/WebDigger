@@ -3,7 +3,7 @@ package org.digger.spider.examples;
 import org.digger.spider.Spider;
 import org.digger.spider.annotation.FieldRule;
 import org.digger.spider.annotation.FieldType;
-import org.digger.spider.entity.OutputModel;
+import org.digger.spider.entity.CrawlModel;
 
 /**
  * 
@@ -14,7 +14,7 @@ import org.digger.spider.entity.OutputModel;
  */
 public class QQTechSpider extends Spider {
 
-    public static class QQTechModel extends OutputModel {
+    public static class QQTechModel extends CrawlModel {
         /**
          * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
          */
@@ -73,7 +73,7 @@ public class QQTechSpider extends Spider {
     public static void main(String[] args) {
         Spider spider = new QQTechSpider();
         spider.addStartUrls("http://tech.qq.com").setFollowed(true).addAllows("^http://tech.qq.com/a/.*htm$");
-        spider.setOutPutModel(QQTechModel.class);
+        spider.setCrawlModel(QQTechModel.class);
 
         spider.start();
     }

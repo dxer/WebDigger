@@ -18,7 +18,7 @@ public class Spider4Cnblogs extends Spider {
         spider.setFollowed(true);
         LinkFilter filter = new LinkFilter();
         filter.addAllows("^http://www.cnblogs.com/lgfeng/p.*html$");
-        spider.setFilter(filter).setOutPutModel(Cnblogs.class);
+        spider.setFilter(filter).setCrawlModel(Cnblogs.class);
 
         spider.start();
     }

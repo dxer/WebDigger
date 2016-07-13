@@ -9,7 +9,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.digger.spider.entity.OutputModel;
+import org.digger.spider.entity.CrawlModel;
 import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
 import org.digger.spider.scheduler.QueueScheduler;
@@ -212,7 +212,7 @@ public class Digger {
         if (response != null) {
 
             // digger会对定义的OutputModel进行解析处理
-            Class<? extends OutputModel> claz = spider.getOutputModelClass();
+            Class<? extends CrawlModel> claz = spider.getCrawlClass();
             if (claz != null) {
                 FieldResolver.resolve(response, claz);
             }
