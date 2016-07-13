@@ -55,4 +55,15 @@ public class LinkFilter {
         }
     }
 
+    /**
+     * 检查过滤器是否生效
+     * 
+     * @return
+     */
+    public boolean isEmpty() {
+        if (allows != null && !allows.isEmpty() && allowDomains != null && !allowDomains.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 }

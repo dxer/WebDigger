@@ -2,7 +2,7 @@ package org.digger.spider.examples;
 
 import org.digger.spider.Spider;
 import org.digger.spider.annotation.FieldRule;
-import org.digger.spider.annotation.FieldType;
+import org.digger.spider.annotation.FieldRule.FieldType;
 import org.digger.spider.entity.CrawlerModel;
 
 /**
@@ -15,10 +15,6 @@ import org.digger.spider.entity.CrawlerModel;
 public class QQTechSpider extends Spider {
 
     public static class QQTechModel extends CrawlerModel {
-        /**
-         * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
-         */
-        private static final long serialVersionUID = 718607251232199037L;
 
         @FieldRule(type = FieldType.CSS, expr = "#C-Main-Article-QQ > div.hd > h1")
         private String title;

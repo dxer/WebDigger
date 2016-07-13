@@ -1,7 +1,9 @@
 package org.digger.spider.selector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -50,7 +52,7 @@ public class Selector {
 
     public String cssHref(String cssQuery) {
         String href = null;
-        
+
         return href;
     }
 
@@ -76,45 +78,52 @@ public class Selector {
         return results;
     }
 
-    public Elements selElements(String parentQuery, String childQuery) {
-        if (doc == null || Strings.isNullOrEmpty(parentQuery) || Strings.isNullOrEmpty(childQuery)) {
-            return null;
+    public List<String> foreach(String parentQuery, String childQuery) {
+        List<String> result = null;
+        if (Strings.isNullOrEmpty(parentQuery) || Strings.isNullOrEmpty(childQuery)) {
+            return result;
         }
-        Elements elements = new Elements();
+
         Elements eles = selElements(parentQuery);
-        if (eles != null && eles.size() > 0) {
-            for (Element e: eles) {
-                Elements els = e.select(childQuery);
-                if (els != null && els.size() > 0) {
-                    elements.addAll(els);
-                }
-            }
+        if (eles == null || eles.size() <= 0) {
+            return result;
         }
-        return elements;
+
+        result = new ArrayList<String>();
+        for (Element e: eles) {
+            result.add(e.select(childQuery).text());
+        }
+
+        return result;
     }
 
-    public List<String> selList(String parentQuery, String childQuery) {
-        if (doc == null || Strings.isNullOrEmpty(parentQuery) || Strings.isNullOrEmpty(childQuery)) {
-            return null;
+    public List<Map<String, String>> foreach(String parentQuery, Map<String, String> map) {
+        List<Map<String, String>> result = null;
+        if (doc == null || Strings.isNullOrEmpty(parentQuery) || map == null || map.isEmpty()) {
+            return result;
         }
-        List<String> results = new ArrayList<String>();
 
         Elements eles = selElements(parentQuery);
-        if (eles != null && eles.size() > 0) {
-            for (Element el: eles) {
-                Elements els = el.select(childQuery);
-                if (els != null && els.size() > 0) {
-                    for (Element e: els) {
-                        String txt = e.text();
-                        if (!Strings.isNullOrEmpty(txt)) {
-                            results.add(txt);
-                        }
-                    }
-                }
-            }
+        if (eles == null || eles.size() <= 0) {
+            return result;
         }
 
-        return results;
+        Map<String, String> resultMap = null;
+        result = new ArrayList<Map<String, String>>();
+        for (Element e: eles) {
+            resultMap = new HashMap<String, String>();
+            for (String fieldName: map.keySet()) {
+                String cssQuery = map.get(fieldName);
+                if (!Strings.isNullOrEmpty(cssQuery)) {
+
+                }
+                resultMap.put(fieldName, e.select(cssQuery).text());
+            }
+            result.add(resultMap);
+        }
+
+        return result;
+
     }
 
 }

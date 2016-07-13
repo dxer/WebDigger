@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Date;
 
 import org.digger.spider.annotation.FieldRule;
-import org.digger.spider.annotation.FieldType;
+import org.digger.spider.annotation.FieldRule.FieldType;
 import org.digger.spider.entity.CrawlerModel;
 import org.digger.spider.entity.Response;
 import org.digger.spider.selector.JXDoc;

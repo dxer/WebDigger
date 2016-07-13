@@ -1,7 +1,7 @@
 package org.digger.spider.examples;
 
 import org.digger.spider.annotation.FieldRule;
-import org.digger.spider.annotation.FieldType;
+import org.digger.spider.annotation.FieldRule.FieldType;
 import org.digger.spider.entity.CrawlerModel;
 
 /**

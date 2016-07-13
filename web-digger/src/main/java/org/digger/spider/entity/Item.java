@@ -65,7 +65,7 @@ public class Item {
         map.put("url", url);
         map.put("fields", fields);
 
-        sb.append("Item=");
+        sb.append("Item = ");
 
         if (model != null) {
             map.put("model", model);

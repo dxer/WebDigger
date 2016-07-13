@@ -219,7 +219,7 @@ public class Digger {
             // 对用户自定义的设置，进行网页分析
             spider.process(response);
 
-            if (spider.isFollowed()) { // 提取当前页面其他符合规则的url，进行继续爬取
+            if (spider.isFollowed() || spider.getFilter().isEmpty()) { // 提取当前页面其他符合规则的url，进行继续爬取
                 Set<String> urls = LinkExtractor.extract(response, spider.getFilter());
                 if (urls != null && urls.size() > 0) {
                     for (String url: urls) {

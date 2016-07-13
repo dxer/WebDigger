@@ -10,6 +10,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FieldRule {
+    
+    public enum FieldType {
+        XPATH, CSS
+    }
 
     FieldType type() default FieldType.CSS;
 

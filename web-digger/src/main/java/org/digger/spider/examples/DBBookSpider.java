@@ -1,6 +1,5 @@
 package org.digger.spider.examples;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +8,6 @@ import org.digger.spider.Spider;
 import org.digger.spider.entity.Item;
 import org.digger.spider.entity.Response;
 import org.digger.spider.selector.Selector;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import com.alibaba.fastjson.JSON;
 
@@ -30,25 +27,15 @@ public class DBBookSpider extends Spider {
     public void process(Response response) {
         Selector selector = response.getJXDoc().getSelector();
 
-        Elements els = selector.selElements("#subject_list > ul > li");
+        Map<String, String> fieldMap = new HashMap<String, String>();
+        fieldMap.put("name", "div.info > h2 > a");
+        fieldMap.put("pub", "div.info > div.pub");
+        fieldMap.put("score", "div.info > div.star.clearfix > span.rating_nums");
+        fieldMap.put("comments", "div.info > div.star.clearfix > span.pl");
+        fieldMap.put("intro", "div.info > p");
 
-        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        for (Element e: els) {
-            Map<String, String> map = new HashMap<String, String>();
-            String name = e.select("div.info > h2 > a").text();
-            String pub = e.select("div.info > div.pub").text();
-            String score = e.select("div.info > div.star.clearfix > span.rating_nums").text();
-            String comments = e.select("div.info > div.star.clearfix > span.pl").text();
-            String intro = e.select("div.info > p").text();
+        List<Map<String, String>> list = selector.foreach("#subject_list > ul > li", fieldMap);
 
-            map.put("name", name);
-            map.put("score", score);
-            map.put("pub", pub);
-            map.put("comments", comments);
-            map.put("intro", intro);
-
-            list.add(map);
-        }
         response.put("list", list);
     }
 
