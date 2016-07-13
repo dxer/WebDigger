@@ -12,5 +12,5 @@ import org.digger.spider.entity.Response;
  */
 public interface Processor {
 
-    public void parser(Response response);
+    public void process(Response response);
 }

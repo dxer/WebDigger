@@ -96,12 +96,12 @@ public class Response {
         this.item.put(key, value);
     }
 
-    public CrawlModel getOutputModel() {
-        return item.getOutputModel();
+    public CrawlerModel getCrawlerModel() {
+        return item.getCrawlerModel();
     }
 
-    public void setOutputModel(CrawlModel model) {
-        item.setOutputModel(model);
+    public void setCrawlerModel(CrawlerModel model) {
+        item.setCrawlerModel(model);
     }
 
     @Override

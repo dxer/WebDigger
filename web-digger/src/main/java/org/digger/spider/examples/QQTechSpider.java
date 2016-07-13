@@ -3,7 +3,7 @@ package org.digger.spider.examples;
 import org.digger.spider.Spider;
 import org.digger.spider.annotation.FieldRule;
 import org.digger.spider.annotation.FieldType;
-import org.digger.spider.entity.CrawlModel;
+import org.digger.spider.entity.CrawlerModel;
 
 /**
  * 
@@ -14,7 +14,7 @@ import org.digger.spider.entity.CrawlModel;
  */
 public class QQTechSpider extends Spider {
 
-    public static class QQTechModel extends CrawlModel {
+    public static class QQTechModel extends CrawlerModel {
         /**
          * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
          */

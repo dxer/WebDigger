@@ -16,7 +16,7 @@ public class Item {
 
     private Map<String, Object> fields = new HashMap<String, Object>();
 
-    private CrawlModel model;
+    private CrawlerModel model;
 
     private Request request;
 
@@ -46,11 +46,11 @@ public class Item {
         return this;
     }
 
-    public void setOutputModel(CrawlModel model) {
+    public void setCrawlerModel(CrawlerModel model) {
         this.model = model;
     }
 
-    public CrawlModel getOutputModel() {
+    public CrawlerModel getCrawlerModel() {
         return this.model;
     }
 

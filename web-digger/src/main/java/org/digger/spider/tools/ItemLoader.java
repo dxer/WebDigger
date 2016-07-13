@@ -31,7 +31,7 @@ public class ItemLoader {
 
     public void addCss(String name, String cssQuesy) {
         if (response != null && !Strings.isNullOrEmpty(name) && !Strings.isNullOrEmpty(cssQuesy)) {
-            String value = response.getJXDoc().getSelector().css(cssQuesy);
+            String value = response.getJXDoc().getSelector().cssText(cssQuesy);
 
             response.put(name, value);
 

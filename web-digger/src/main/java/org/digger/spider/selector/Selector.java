@@ -34,7 +34,7 @@ public class Selector {
         return doc != null? doc.select("title").text(): null;
     }
 
-    public String css(String cssQuery) {
+    public String cssText(String cssQuery) {
         if (doc == null || Strings.isNullOrEmpty(cssQuery)) {
             return null;
         }
@@ -46,6 +46,12 @@ public class Selector {
         }
 
         return ret;
+    }
+
+    public String cssHref(String cssQuery) {
+        String href = null;
+        
+        return href;
     }
 
     public Elements selElements(String cssQuery) {

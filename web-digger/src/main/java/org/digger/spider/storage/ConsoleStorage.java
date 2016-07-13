@@ -11,7 +11,7 @@ import org.digger.spider.entity.Item;
  */
 public class ConsoleStorage implements Storage {
 
-    public void processItem(Item item) {
+    public void persist(Item item) {
         if (item != null) {
             System.out.println(item.toString());
         }

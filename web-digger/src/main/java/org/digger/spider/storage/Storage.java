@@ -11,5 +11,5 @@ import org.digger.spider.entity.Item;
  */
 public interface Storage {
 
-    public void processItem(Item item);
+    public void persist(Item item);
 }

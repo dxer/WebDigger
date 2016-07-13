@@ -43,7 +43,7 @@ public class FileStorage implements Storage {
 
     }
 
-    public void processItem(Item item) {
+    public void persist(Item item) {
         String fileName = DigestUtils.md5Hex(item.getRequest().getUrl().getBytes());
 
         String path = dir + fileName;

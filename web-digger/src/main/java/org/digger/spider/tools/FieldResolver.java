@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.digger.spider.annotation.FieldRule;
 import org.digger.spider.annotation.FieldType;
-import org.digger.spider.entity.CrawlModel;
+import org.digger.spider.entity.CrawlerModel;
 import org.digger.spider.entity.Response;
 import org.digger.spider.selector.JXDoc;
 import org.digger.spider.selector.Selector;
@@ -15,7 +15,7 @@ import com.google.common.base.Strings;
 
 public class FieldResolver {
 
-    private static void setValue(Field field, FieldRule fieldRule, String type, CrawlModel model, String value) {
+    private static void setValue(Field field, FieldRule fieldRule, String type, CrawlerModel model, String value) {
         try {
 
             if (type.endsWith("String")) {
@@ -41,10 +41,10 @@ public class FieldResolver {
         }
     }
 
-    public static void resolve(Response response, Class<? extends CrawlModel> claz) {
+    public static void resolve(Response response, Class<? extends CrawlerModel> claz) {
         if (response != null && claz != null) {
             try {
-                CrawlModel model = null;
+                CrawlerModel model = null;
                 try {
                     model = claz.newInstance();
                 } catch (Exception e) {
@@ -73,7 +73,7 @@ public class FieldResolver {
                             String type = f.getType().toString();// 得到此属性的类型
                             if (!Strings.isNullOrEmpty(expr)) {
                                 if (fieldType == FieldType.CSS) {
-                                    value = selector.css(expr);
+                                    value = selector.cssText(expr);
                                 } else if (fieldType == FieldType.XPATH) {
                                     value = xpath.xpath(expr);
                                 }
@@ -83,7 +83,7 @@ public class FieldResolver {
                     }
                 }
 
-                response.setOutputModel(model);
+                response.setCrawlerModel(model);
             } catch (SecurityException e) {
                 e.printStackTrace();
             } catch (Exception e) {

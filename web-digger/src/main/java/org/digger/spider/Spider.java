@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.digger.spider.download.Downloader;
 import org.digger.spider.download.HttpClientDownloader;
-import org.digger.spider.entity.CrawlModel;
+import org.digger.spider.entity.CrawlerModel;
 import org.digger.spider.entity.Item;
 import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
@@ -48,7 +48,7 @@ public abstract class Spider extends BaseSpider {
     /**
      * 输出model
      */
-    protected Class<? extends CrawlModel> crawlClass;
+    protected Class<? extends CrawlerModel> crawlClass;
 
     /**
      * 使用的下载器
@@ -124,12 +124,12 @@ public abstract class Spider extends BaseSpider {
         return this;
     }
 
-    public Spider setCrawlModel(Class<? extends CrawlModel> claz) {
+    public Spider setCrawlModel(Class<? extends CrawlerModel> claz) {
         this.crawlClass = claz;
         return this;
     }
 
-    public Class<? extends CrawlModel> getCrawlClass() {
+    public Class<? extends CrawlerModel> getCrawlClass() {
         return this.crawlClass;
     }
 
@@ -149,7 +149,7 @@ public abstract class Spider extends BaseSpider {
         return getDownloader().download(request);
     }
 
-    public void parser(Response response) {
+    public void process(Response response) {
         if (response != null) {
             response.put("url", response.getRequest().getUrl());
             response.put("title", response.getJXDoc().getSelector().getTitle());
@@ -168,8 +168,8 @@ public abstract class Spider extends BaseSpider {
         return processor;
     }
 
-    public void processItem(Item item) {
-        getStorage().processItem(item);
+    public void persist(Item item) {
+        getStorage().persist(item);
     }
 
     public Spider setStorage(Storage storage) {
