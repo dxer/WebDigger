@@ -1,5 +1,7 @@
 package org.digger.spider.proxy;
 
+import org.digger.spider.tools.NetworkUtils;
+
 
 /**
  * 

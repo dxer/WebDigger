@@ -9,6 +9,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.digger.spider.conf.Configuration;
+import org.digger.spider.conf.DiggerConf;
 import org.digger.spider.entity.CrawlerModel;
 import org.digger.spider.entity.Request;
 import org.digger.spider.entity.Response;
@@ -28,8 +30,6 @@ public class Digger {
 
     private Scheduler<Request> scheduler = new QueueScheduler();
 
-    private int threadNum = 4;
-
     private boolean isRunning = false;
 
     private static ThreadPoolExecutor threadPoolExecutor;
@@ -37,6 +37,8 @@ public class Digger {
     private static Lock diggerLocker = new ReentrantLock(false);
 
     private static Condition condition = diggerLocker.newCondition();
+
+    private DiggerConf diggerConf;
 
     /**
      * 使用静态内部类的方式实现单例模式
@@ -50,21 +52,16 @@ public class Digger {
         private static final Digger INSTANCE = new Digger();
     }
 
-    private Digger(){}
-
     public static final Digger getInstance() {
         return DiggerBuilder.INSTANCE;
     }
 
-    /**
-     * 设置线程数，默认是4
-     * 
-     * @param threadNum
-     * @return
-     */
-    public Digger threadNum(int threadNum) {
-        this.threadNum = threadNum;
-        return this;
+    public void setConf(Configuration conf) {
+        this.diggerConf = (DiggerConf) conf;
+    }
+
+    public Configuration getConf() {
+        return this.diggerConf;
     }
 
     public void addRequests(Spider spider, List<String> urls) {
@@ -108,6 +105,7 @@ public class Digger {
     public void start() {
         try {
             if (threadPoolExecutor == null) {
+                int threadNum = diggerConf.getInt(DiggerConf.WORK_THREAD_NUM, 3);
                 threadPoolExecutor = new ThreadPoolExecutor(threadNum, threadNum, 3, TimeUnit.SECONDS,
                                 new LinkedBlockingQueue<Runnable>());
             }

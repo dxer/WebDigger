@@ -1,4 +1,4 @@
-package org.digger.spider.proxy;
+package org.digger.spider.tools;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
