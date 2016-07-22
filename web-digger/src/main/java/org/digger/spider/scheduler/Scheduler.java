@@ -1,16 +1,3 @@
-/**
- * Copyright (c) 2016 21CN.COM . All rights reserved.
- * 
- * Description: digger
- * 
- * <pre>
- * Modified log:
- * ------------------------------------------------------
- * Ver.		Date		Author			Description
- * ------------------------------------------------------
- * 1.0		2016年3月22日	linghf		created.
- * </pre>
- */
 package org.digger.spider.scheduler;
 
 
